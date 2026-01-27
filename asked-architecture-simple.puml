@@ -1,0 +1,52 @@
+@startuml AskED+ Architecture
+
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+
+title AskED+ Application Architecture
+
+package "Client Layer" {
+    component [Web Browser] as Browser
+    component [Frontend\nHTML/CSS/JavaScript] as Frontend
+}
+
+package "Application Server" {
+    component [Flask Web Server] as Flask
+    component [REST API Endpoints] as API
+    component [Business Logic Layer] as Business
+}
+
+package "Data Layer" {
+    database "PostgreSQL Database\n(Neon Cloud)" as DB {
+        entity domainmodel
+        entity domainmodelrelationship
+        entity domainelementproperties
+        entity plantumldiagrams
+        entity plantumldiagram_elements
+    }
+}
+
+cloud "External Services" {
+    component [Google Gemini API] as Gemini
+    component [DuckDuckGo Search] as DDG
+    component [PlantUML Service] as PlantUML
+}
+
+Browser --> Frontend : HTTP/HTTPS
+Frontend --> Flask : REST API
+Flask --> API
+API --> Business
+
+Business --> DB : SQL Queries
+Business --> Gemini : LLM API
+Business --> DDG : Search API
+Business --> PlantUML : Diagram API
+
+domainmodel ||--o{ domainmodelrelationship
+domainmodel ||--o{ domainelementproperties
+domainmodel ||--o{ plantumldiagram_elements
+plantumldiagrams ||--o{ plantumldiagram_elements
+
+@enduml
+

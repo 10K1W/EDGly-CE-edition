@@ -1,0 +1,44 @@
+﻿            // Store code for copying
+            window.plantumlCodeToCopy = plantumlCode;
+            
+            // Use encoded version from server (proper PlantUML encoding) with ~1 prefix
+            const encodedWithPrefix = `~1${encoded}`;
+            const plantumlUrl = `https://www.plantuml.com/plantuml/svg/${encodedWithPrefix}`;
+            const plantumlEditorUrl = `https://www.plantuml.com/plantuml/uml/${encodedWithPrefix}`;
+            const plantumlPngUrl = `https://www.plantuml.com/plantuml/png/${encodedWithPrefix}`;
+            
+            // Display in modal
+            const modalContent = document.getElementById('plantumlContent');
+            modalContent.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #ffffff; margin-bottom: 10px;">${title}</h3>
+                    <p><strong>Elements:</strong> ${elementsCount} | <strong>Relationships:</strong> ${relationshipsCount}</p>
+                </div>
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <label style="font-weight: 600;">PlantUML Code (EDGY Syntax):</label>
+                        <button class="copy-btn" onclick="copyPlantUMLCode()"><img src="/images/copy.png" alt="Copy" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span>Copy Code</span>
+                        </button>
+                    </div>
+                    <div class="plantuml-code" id="plantumlCode">${escapeHtml(plantumlCode)}</div>
+                </div>
+                <div class="plantuml-preview"><h3>Diagram Preview</h3><p style="color: #666; margin-bottom: 15px;">View the rendered diagram below or open in PlantUML editor</p><img id="diagramPreview" src="${plantumlUrl}" alt="PlantUML Diagram Preview" style="max-width: 100%; height: auto; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; margin-bottom: 15px;" onerror="document.getElementById('diagramError').style.display='block'; this.style.display='none';"><div id="diagramError" style="display: none; color: #f44336; padding: 20px;">
+                        Unable to load diagram preview. Please use the PlantUML editor link below.
+                    </div>
+                    <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <a href="${plantumlEditorUrl}" target="_blank" class="plantuml-link">
+                            ðŸš€ Open in PlantUML Editor
+                        </a>
+                        <a href="${plantumlUrl}" target="_blank" class="plantuml-link">
+                            ðŸ“¥ Download SVG
+                        </a>
+                        <a href="${plantumlPngUrl}" target="_blank" class="plantuml-link">
+                            ðŸ“¥ Download PNG
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('plantumlModal').style.display = 'block';
+        }
+

@@ -1,0 +1,159 @@
+@startuml AskED+ Architecture Diagram
+
+!define RECTANGLE class
+
+title AskED+ Application Architecture
+
+skinparam componentStyle rectangle
+skinparam backgroundColor #1a1a2e
+skinparam defaultFontColor #e0e0e0
+skinparam component {
+    BackgroundColor #2d2d44
+    BorderColor #808080
+    ArrowColor #808080
+}
+
+package "Client Layer" {
+    [Web Browser] as Browser
+    [HTML/CSS/JavaScript\nFrontend] as Frontend
+    note right of Frontend
+        - Single Page Application
+        - Dashboard UI
+        - Chat Interface
+        - Repository Visualization
+        - Element Management
+        - Property Management
+        - Diagram Generation UI
+    end note
+}
+
+package "Application Layer" {
+    [Flask Web Server] as FlaskServer
+    note right of FlaskServer
+        - RESTful API Endpoints
+        - Request Routing
+        - Business Logic
+        - Data Validation
+    end note
+    
+    component "API Endpoints" as API {
+        [Elements API] as ElementsAPI
+        [Relationships API] as RelationshipsAPI
+        [Chat API] as ChatAPI
+        [PlantUML API] as PlantUMLAPI
+        [Properties API] as PropertiesAPI
+        [Diagrams API] as DiagramsAPI
+    }
+    
+    component "Business Logic" as BusinessLogic {
+        [Element Management] as ElementMgmt
+        [Relationship Management] as RelationshipMgmt
+        [Chat Service] as ChatService
+        [PlantUML Generator] as PlantUMLGen
+        [Property Manager] as PropertyMgr
+        [Diagram Manager] as DiagramMgr
+    }
+}
+
+package "Data Layer" {
+    database "PostgreSQL Database\n(Neon Cloud)" as Database {
+        entity "domainmodel" as DomainModel {
+            * id : INTEGER
+            * name : VARCHAR
+            description : TEXT
+            enterprise : VARCHAR
+            facet : VARCHAR
+            element : VARCHAR
+            image_url : VARCHAR
+            created_at : TIMESTAMP
+            updated_at : TIMESTAMP
+        }
+        
+        entity "domainmodelrelationship" as Relationships {
+            * id : INTEGER
+            * source_element_id : INTEGER
+            * target_element_id : INTEGER
+            relationship_type : VARCHAR
+            description : TEXT
+            created_at : TIMESTAMP
+        }
+        
+        entity "domainelementproperties" as Properties {
+            * id : INTEGER
+            * element_id : INTEGER
+            ragtype : VARCHAR
+            propertyname : VARCHAR
+            description : TEXT
+            image_url : VARCHAR
+            created_at : TIMESTAMP
+            updated_at : TIMESTAMP
+        }
+        
+        entity "plantumldiagrams" as Diagrams {
+            * id : INTEGER
+            title : VARCHAR
+            plantuml_code : TEXT
+            encoded_url : TEXT
+            enterprise_filter : VARCHAR
+            elements_count : INTEGER
+            relationships_count : INTEGER
+            created_at : TIMESTAMP
+        }
+        
+        entity "plantumldiagram_elements" as DiagramElements {
+            * id : INTEGER
+            * diagram_id : INTEGER
+            * element_id : INTEGER
+        }
+    }
+}
+
+package "External Services" {
+    [Google Gemini API] as GeminiAPI
+    note right of GeminiAPI
+        - LLM for Chat Responses
+        - Enterprise Design Context
+        - Natural Language Processing
+    end note
+    
+    [DuckDuckGo Search] as DuckDuckGo
+    note right of DuckDuckGo
+        - Web Search for Context
+        - Enterprise Design Content
+        - EDGY Framework Information
+    end note
+    
+    [PlantUML Service] as PlantUMLService
+    note right of PlantUMLService
+        - Diagram Rendering
+        - SVG/PNG Generation
+        - EDGY Syntax Support
+    end note
+}
+
+' Connections
+Browser --> Frontend : HTTP/HTTPS
+Frontend --> FlaskServer : REST API Calls
+FlaskServer --> API : Routes Requests
+API --> BusinessLogic : Processes Requests
+
+BusinessLogic --> Database : SQL Queries\n(psycopg2)
+
+ChatService --> GeminiAPI : API Calls\n(HTTPS)
+ChatService --> DuckDuckGo : Search API\n(HTTPS)
+PlantUMLGen --> PlantUMLService : Diagram Generation\n(HTTPS)
+
+Database ..> DomainModel : Stores Elements
+Database ..> Relationships : Stores Relationships
+Database ..> Properties : Stores Element Properties
+Database ..> Diagrams : Stores Saved Diagrams
+Database ..> DiagramElements : Links Diagrams to Elements
+
+DomainModel ||--o{ Relationships : source_element_id
+DomainModel ||--o{ Relationships : target_element_id
+DomainModel ||--o{ Properties : element_id
+DomainModel ||--o{ DiagramElements : element_id
+Diagrams ||--o{ DiagramElements : diagram_id
+
+@enduml
+
