@@ -3061,28 +3061,28 @@
                         <h2 style="margin: 0;">Impact Analysis</h2>
                         <span class="close" onclick="closeImpactAnalysisModal()">&times;</span>
                     </div>
-                    <div class="dialog-body" style="padding: 16px;">
+                    <div class="dialog-body" data-impact-scope="modal" style="padding: 16px;">
                         <div style="color: #b0b0d0; font-size: 12px; margin-bottom: 12px;">
                             Build a multi-hop impact model starting from any occurrence in the repository.
                         </div>
                         <div style="margin-bottom: 12px; display: flex; gap: 8px;">
-                            <input id="impactSearchInput" type="text" placeholder="Search occurrences (name, type, description)" style="flex: 1; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
-                            <button class="refresh-btn" onclick="searchImpactOccurrences()" style="padding: 6px 12px; font-size: 12px;">Search</button>
+                            <input class="impact-search-input" type="text" placeholder="Search occurrences (name, type, description)" style="flex: 1; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
+                            <button class="refresh-btn" onclick="searchImpactOccurrences('modal')" style="padding: 6px 12px; font-size: 12px;">Search</button>
                         </div>
                         <div style="margin-bottom: 12px;">
                             <label style="display: block; margin-bottom: 6px; color: #cccccc; font-size: 12px;">Source Occurrence</label>
-                            <select id="impactSourceInstance" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
+                            <select class="impact-source-instance" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
                                 <option value="">Loading...</option>
                             </select>
                         </div>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                             <div style="flex: 1; min-width: 120px;">
                                 <label style="display: block; margin-bottom: 6px; color: #cccccc; font-size: 12px;">Depth (hops)</label>
-                                <input id="impactDepth" type="number" min="1" max="6" value="2" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
+                                <input class="impact-depth" type="number" min="1" max="6" value="2" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
                             </div>
                             <div style="flex: 1; min-width: 120px;">
                                 <label style="display: block; margin-bottom: 6px; color: #cccccc; font-size: 12px;">Direction</label>
-                                <select id="impactDirection" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
+                                <select class="impact-direction" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
                                     <option value="both">Both</option>
                                     <option value="outgoing">Outgoing</option>
                                     <option value="incoming">Incoming</option>
@@ -3091,14 +3091,14 @@
                         </div>
                         <div style="margin-top: 12px;">
                             <label style="display: block; margin-bottom: 6px; color: #cccccc; font-size: 12px;">Relationship Types (optional)</label>
-                            <select id="impactRelationshipTypes" multiple size="4" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
+                            <select class="impact-relationship-types" multiple size="4" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
                             </select>
                             <div style="color: #808080; font-size: 11px; margin-top: 6px;">Hold Ctrl/Cmd to select multiple types.</div>
                         </div>
                     </div>
                     <div class="dialog-footer" style="display: flex; justify-content: flex-end; gap: 8px;">
                         <button class="refresh-btn" onclick="closeImpactAnalysisModal()" style="padding: 6px 12px; font-size: 12px;">Cancel</button>
-                        <button class="refresh-btn" onclick="runImpactAnalysis()" style="padding: 6px 12px; font-size: 12px;">Create Impact Model</button>
+                        <button class="refresh-btn" onclick="runImpactAnalysis('modal')" style="padding: 6px 12px; font-size: 12px;">Create Impact Model</button>
                     </div>
                 </div>
             </div>
@@ -3228,7 +3228,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="repositoryTab-impact" class="repository-tab-panel">
+                        <div id="repositoryTab-impact" class="repository-tab-panel" data-impact-scope="tab">
                             <div style="display: flex; align-items: center; margin-bottom: 10px; padding-top: 2px;">
                                 <div style="color: #e0e0e0; font-size: 14px; font-weight: 600;">Impact Analysis</div>
                             </div>
@@ -3236,23 +3236,23 @@
                                 Build a multi-hop impact model starting from any occurrence in the repository.
                             </div>
                             <div style="margin-bottom: 12px; display: flex; gap: 8px;">
-                                <input id="impactSearchInput" type="text" placeholder="Search occurrences (name, type, description)" style="flex: 1; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
-                                <button class="refresh-btn" onclick="searchImpactOccurrences()" style="padding: 6px 12px; font-size: 12px;">Search</button>
+                                <input class="impact-search-input" type="text" placeholder="Search occurrences (name, type, description)" style="flex: 1; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
+                                <button class="refresh-btn" onclick="searchImpactOccurrences('tab')" style="padding: 6px 12px; font-size: 12px;">Search</button>
                             </div>
                             <div style="margin-bottom: 12px;">
                                 <label style="display: block; margin-bottom: 6px; color: #cccccc; font-size: 12px;">Source Occurrence</label>
-                                <select id="impactSourceInstance" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
+                                <select class="impact-source-instance" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
                                     <option value="">Search repository occurrences...</option>
                                 </select>
                             </div>
                             <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                                 <div style="flex: 1; min-width: 120px;">
                                     <label style="display: block; margin-bottom: 6px; color: #cccccc; font-size: 12px;">Depth (hops)</label>
-                                    <input id="impactDepth" type="number" min="1" max="6" value="2" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
+                                    <input class="impact-depth" type="number" min="1" max="6" value="2" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
                                 </div>
                                 <div style="flex: 1; min-width: 120px;">
                                     <label style="display: block; margin-bottom: 6px; color: #cccccc; font-size: 12px;">Direction</label>
-                                    <select id="impactDirection" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
+                                    <select class="impact-direction" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
                                         <option value="both">Both</option>
                                         <option value="outgoing">Outgoing</option>
                                         <option value="incoming">Incoming</option>
@@ -3261,12 +3261,12 @@
                             </div>
                             <div style="margin-top: 12px;">
                                 <label style="display: block; margin-bottom: 6px; color: #cccccc; font-size: 12px;">Relationship Types (optional)</label>
-                                <select id="impactRelationshipTypes" multiple size="4" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
+                                <select class="impact-relationship-types" multiple size="4" style="width: 100%; padding: 8px; border: 1px solid #3e3e42; border-radius: 4px; background: #1e1e1e; color: #e0e0e0; font-size: 12px;">
                                 </select>
                                 <div style="color: #808080; font-size: 11px; margin-top: 6px;">Hold Ctrl/Cmd to select multiple types.</div>
                             </div>
                             <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px;">
-                                <button class="refresh-btn" onclick="runImpactAnalysis()" style="padding: 6px 12px; font-size: 12px;">Create Impact Model</button>
+                                <button class="refresh-btn" onclick="runImpactAnalysis('tab')" style="padding: 6px 12px; font-size: 12px;">Create Impact Model</button>
                             </div>
                             <div style="margin-top: 18px;">
                                 <div style="color: #e0e0e0; font-size: 13px; font-weight: 600; margin-bottom: 10px;">Impact Models</div>
@@ -3653,6 +3653,24 @@
             setAuthMode(authMode === 'login' ? 'register' : 'login');
         });
 
+        function refreshAuthenticatedData() {
+            if (typeof loadElementTypes === 'function') {
+                loadElementTypes();
+            }
+            if (typeof loadPropertiesForPalette === 'function') {
+                loadPropertiesForPalette();
+            }
+            if (typeof loadTemplatesForPalette === 'function') {
+                loadTemplatesForPalette();
+            }
+            if (typeof loadRelationshipRules === 'function') {
+                loadRelationshipRules();
+            }
+            if (typeof loadRecords === 'function') {
+                loadRecords();
+            }
+        }
+
         authForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             const email = authForm.querySelector('#authEmail').value.trim();
@@ -3682,6 +3700,7 @@
                 }
                 localStorage.setItem(AUTH_TOKEN_KEY, data.token);
                 hideAuthOverlay();
+                refreshAuthenticatedData();
             } catch (error) {
                 setAuthError('Authentication failed. Please try again.');
             }
@@ -3718,6 +3737,7 @@
                     return;
                 }
                 hideAuthOverlay();
+                refreshAuthenticatedData();
             } catch (error) {
                 showAuthOverlay();
             }
@@ -5069,8 +5089,26 @@
             }
         }
 
+        function resolveImpactScope(scope) {
+            if (scope) return scope;
+            const modal = document.getElementById('impactAnalysisModal');
+            if (modal && window.getComputedStyle(modal).display !== 'none') {
+                return 'modal';
+            }
+            return 'tab';
+        }
+
+        function getImpactContainer(scope) {
+            return document.querySelector(`[data-impact-scope="${scope}"]`);
+        }
+
+        function getImpactControl(scope, selector) {
+            const container = getImpactContainer(scope);
+            return container ? container.querySelector(selector) : null;
+        }
+
         async function openImpactAnalysisModal() {
-            await populateImpactAnalysisOptions();
+            await populateImpactAnalysisOptions('modal');
             const modal = document.getElementById('impactAnalysisModal');
             if (modal) {
                 modal.style.display = 'flex';
@@ -5084,9 +5122,10 @@
             }
         }
 
-        async function populateImpactAnalysisOptions() {
-            const sourceSelect = document.getElementById('impactSourceInstance');
-            const relSelect = document.getElementById('impactRelationshipTypes');
+        async function populateImpactAnalysisOptions(scope) {
+            const resolvedScope = resolveImpactScope(scope);
+            const sourceSelect = getImpactControl(resolvedScope, '.impact-source-instance');
+            const relSelect = getImpactControl(resolvedScope, '.impact-relationship-types');
             if (!sourceSelect || !relSelect) return;
 
             sourceSelect.innerHTML = '<option value="">Search repository occurrences...</option>';
@@ -5104,9 +5143,10 @@
             }
         }
 
-        async function searchImpactOccurrences() {
-            const query = document.getElementById('impactSearchInput')?.value.trim();
-            const sourceSelect = document.getElementById('impactSourceInstance');
+        async function searchImpactOccurrences(scope) {
+            const resolvedScope = resolveImpactScope(scope);
+            const query = getImpactControl(resolvedScope, '.impact-search-input')?.value.trim();
+            const sourceSelect = getImpactControl(resolvedScope, '.impact-source-instance');
             if (!sourceSelect) return;
             if (!query) {
                 sourceSelect.innerHTML = '<option value="">Enter a search term first</option>';
@@ -5172,11 +5212,12 @@
             }
         }
 
-        async function runImpactAnalysis() {
-            const sourceId = document.getElementById('impactSourceInstance')?.value;
-            const depth = parseInt(document.getElementById('impactDepth')?.value || '2', 10);
-            const direction = document.getElementById('impactDirection')?.value || 'both';
-            const relSelect = document.getElementById('impactRelationshipTypes');
+        async function runImpactAnalysis(scope) {
+            const resolvedScope = resolveImpactScope(scope);
+            const sourceId = getImpactControl(resolvedScope, '.impact-source-instance')?.value;
+            const depth = parseInt(getImpactControl(resolvedScope, '.impact-depth')?.value || '2', 10);
+            const direction = getImpactControl(resolvedScope, '.impact-direction')?.value || 'both';
+            const relSelect = getImpactControl(resolvedScope, '.impact-relationship-types');
             const relationship_types = relSelect ? Array.from(relSelect.selectedOptions).map(o => o.value) : [];
 
             if (!sourceId) {
@@ -5345,7 +5386,7 @@
                 loadAnalytics();
                 loadDesignRulesAndViolations();
             } else if (tabName === 'impact') {
-                populateImpactAnalysisOptions();
+                populateImpactAnalysisOptions('tab');
                 loadImpactModels();
             } else if (tabName === 'properties') {
                 loadRepositoryProperties();
@@ -15347,6 +15388,9 @@
         async function loadElementTypes() {
             try {
                 const response = await fetch('/api/records');
+                if (!response.ok) {
+                    throw new Error('Failed to load element types');
+                }
                 const elements = await response.json();
                 
                 const palette = document.getElementById('elementPaletteList');

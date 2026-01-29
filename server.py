@@ -187,11 +187,35 @@ def extract_bearer_token():
         return None
     return parts[1].strip()
 
+def ensure_seeded_user_database(user_db_path):
+    """Ensure a user database has seed elements/relationships/properties."""
+    conn = get_db_connection(db_path=user_db_path)
+    if not conn:
+        return False
+    try:
+        cur = conn.cursor()
+        cur.execute('SELECT COUNT(*) FROM domainmodel')
+        element_count = cur.fetchone()[0]
+        if element_count == 0 and DB_PATH and os.path.exists(DB_PATH):
+            copy_seed_database_data(conn, DB_PATH)
+        cur.close()
+        conn.close()
+        return True
+    except Exception as e:
+        print(f"[Database] Error ensuring seed data: {e}")
+        try:
+            conn.close()
+        except Exception:
+            pass
+        return False
+
 def ensure_user_database(user_id):
     os.makedirs(USER_DB_DIR, exist_ok=True)
     user_db_path = os.path.join(USER_DB_DIR, f"user_{user_id}.db")
     if not os.path.exists(user_db_path):
         init_database(db_path=user_db_path)
+    else:
+        ensure_seeded_user_database(user_db_path)
     return user_db_path
 
 def resolve_auth_user(token):
